@@ -1,4 +1,4 @@
-package bjorn.petprojects.domain;
+package bjorn.petprojects.recipes.domain;
 
 
 import javax.persistence.*;
@@ -13,6 +13,13 @@ public class Ingredient {
 
     private String description;
     private BigDecimal amount;
+
+    public Ingredient(String description, BigDecimal amount, UnitOfMeasure uom, Recipe recipe) {
+        this.description = description;
+        this.amount = amount;
+        this.uom = uom;
+        this.recipe = recipe;
+    }
 
     @OneToOne(fetch = FetchType.EAGER)
     private UnitOfMeasure uom;

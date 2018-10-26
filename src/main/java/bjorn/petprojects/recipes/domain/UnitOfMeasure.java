@@ -1,4 +1,4 @@
-package bjorn.petprojects.domain;
+package bjorn.petprojects.recipes.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
