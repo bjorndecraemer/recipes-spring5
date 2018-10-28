@@ -2,7 +2,6 @@ package bjorn.petprojects.recipes.services;
 
 import bjorn.petprojects.recipes.domain.Recipe;
 import bjorn.petprojects.recipes.repositories.RecipeRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
