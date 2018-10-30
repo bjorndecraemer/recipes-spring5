@@ -1,10 +1,17 @@
 package bjorn.petprojects.recipes.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Recipe {
 
     @Id
@@ -36,9 +43,6 @@ public class Recipe {
 
     @Enumerated(value = EnumType.STRING)
     private Difficulty difficulty;
-
-    public Recipe() {
-    }
 
     public void setNotes(Notes notes) {
         this.notes = notes;
