@@ -154,8 +154,4 @@ public class Recipe {
     public void setDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
     }
-
-    public String toString() {
-        return "Recipe(id=" + this.getId() + ", description=" + this.getDescription() + ", prepTime=" + this.getPrepTime() + ", cookTime=" + this.getCookTime() + ", servings=" + this.getServings() + ", source=" + this.getSource() + ", url=" + this.getUrl() + ", directions=" + this.getDirections() + ", ingredients=" + this.getIngredients() + ", image=" + java.util.Arrays.deepToString(this.getImage()) + ", notes=" + this.getNotes() + ", categories=" + this.getCategories() + ", difficulty=" + this.getDifficulty() + ")";
-    }
 }
