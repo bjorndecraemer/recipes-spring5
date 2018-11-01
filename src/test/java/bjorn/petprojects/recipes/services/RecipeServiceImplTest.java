@@ -1,5 +1,7 @@
 package bjorn.petprojects.recipes.services;
 
+import bjorn.petprojects.recipes.converters.RecipeCommandToRecipe;
+import bjorn.petprojects.recipes.converters.RecipeToRecipeCommand;
 import bjorn.petprojects.recipes.domain.Recipe;
 import bjorn.petprojects.recipes.repositories.RecipeRepository;
 import org.junit.Before;
@@ -25,10 +27,17 @@ public class RecipeServiceImplTest {
     @Mock
     RecipeRepository recipeRepository;
 
+    @Mock
+    RecipeToRecipeCommand recipeToRecipeCommand;
+
+    @Mock
+    RecipeCommandToRecipe recipeCommandToRecipe;
+
+
     @Before
     public void setUp(){
         MockitoAnnotations.initMocks(this);
-        recipeService = new RecipeServiceImpl(recipeRepository);
+        recipeService = new RecipeServiceImpl(recipeRepository, recipeToRecipeCommand, recipeCommandToRecipe);
     }
 
 
