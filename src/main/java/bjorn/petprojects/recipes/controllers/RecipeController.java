@@ -2,6 +2,7 @@ package bjorn.petprojects.recipes.controllers;
 
 import bjorn.petprojects.recipes.commands.RecipeCommand;
 import bjorn.petprojects.recipes.services.RecipeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**
  * Created by jt on 6/19/17.
  */
+@Slf4j
 @Controller
 public class RecipeController {
 
@@ -40,11 +42,19 @@ public class RecipeController {
         model.addAttribute("recipe", recipeService.findCommandById(Long.valueOf(id)));
         return "recipe/recipeform";
     }
-
-    @PostMapping("recipe")
+    @RequestMapping("recipe")
+    @PostMapping
     public String saveOrUpdate(@ModelAttribute RecipeCommand command){
         RecipeCommand savedCommand = recipeService.saveRecipeCommand(command);
 
         return "redirect:/recipe/"+savedCommand.getId()+"/show";
+    }
+
+    @RequestMapping("recipe/{id}/delete")
+    @PostMapping
+    public String deleteById(@PathVariable String id){
+        log.debug("Deleting recipe with id : "+id);
+        recipeService.deleteById(Long.valueOf(id));
+        return "redirect:/";
     }
 }

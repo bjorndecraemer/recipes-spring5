@@ -7,7 +7,9 @@ import bjorn.petprojects.recipes.converters.RecipeToRecipeCommand;
 import bjorn.petprojects.recipes.domain.Recipe;
 import bjorn.petprojects.recipes.repositories.RecipeRepository;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -23,6 +25,9 @@ import static org.mockito.Mockito.*;
 public class RecipeServiceImplTest {
 
     RecipeServiceImpl recipeService;
+
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
 
     @Mock
     RecipeRepository recipeRepository;
@@ -89,6 +94,16 @@ public class RecipeServiceImplTest {
         assertEquals(recipes.size(), 1);
         verify(recipeRepository, times(1)).findAll();
         verify(recipeRepository, never()).findById(anyLong());
+    }
+
+    @Test
+    public void testDeleteById() throws Exception{
+        Long idToDelete = Long.valueOf(2L);
+        recipeService.deleteById(idToDelete);
+
+        verify(recipeRepository, times(1)).deleteById(anyLong());
+        exception.expect(Exception.class);
+        recipeService.findById(idToDelete);
     }
 
 
