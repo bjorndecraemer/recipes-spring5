@@ -1,5 +1,6 @@
 package bjorn.petprojects.recipes.services;
 
+
 import bjorn.petprojects.recipes.commands.RecipeCommand;
 import bjorn.petprojects.recipes.converters.RecipeCommandToRecipe;
 import bjorn.petprojects.recipes.converters.RecipeToRecipeCommand;
@@ -13,34 +14,39 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+
 @Slf4j
 @Service
 public class RecipeServiceImpl implements RecipeService {
 
     private final RecipeRepository recipeRepository;
-    private final RecipeToRecipeCommand recipeToRecipeCommand;
     private final RecipeCommandToRecipe recipeCommandToRecipe;
+    private final RecipeToRecipeCommand recipeToRecipeCommand;
 
-    public RecipeServiceImpl(RecipeRepository recipeRepository, RecipeToRecipeCommand recipeToRecipeCommand, RecipeCommandToRecipe recipeCommandToRecipe) {
+    public RecipeServiceImpl(RecipeRepository recipeRepository, RecipeCommandToRecipe recipeCommandToRecipe, RecipeToRecipeCommand recipeToRecipeCommand) {
         this.recipeRepository = recipeRepository;
-        this.recipeToRecipeCommand = recipeToRecipeCommand;
         this.recipeCommandToRecipe = recipeCommandToRecipe;
+        this.recipeToRecipeCommand = recipeToRecipeCommand;
     }
 
     @Override
     public Set<Recipe> getRecipes() {
-        Set<Recipe> allRecipes = new HashSet<>();
-        recipeRepository.findAll().iterator().forEachRemaining(allRecipes::add);
-        return allRecipes;
+        log.debug("I'm in the service");
+
+        Set<Recipe> recipeSet = new HashSet<>();
+        recipeRepository.findAll().iterator().forEachRemaining(recipeSet::add);
+        return recipeSet;
     }
 
     @Override
-    public Recipe findById(Long id){
-        Optional<Recipe> recipeOptional = recipeRepository.findById(id);
+    public Recipe findById(Long l) {
 
-        if(!recipeOptional.isPresent()){
-            throw new RuntimeException("Recipe with id "+id+" not found!");
+        Optional<Recipe> recipeOptional = recipeRepository.findById(l);
+
+        if (!recipeOptional.isPresent()) {
+            throw new RuntimeException("Recipe Not Found!");
         }
+
         return recipeOptional.get();
     }
 
@@ -50,7 +56,7 @@ public class RecipeServiceImpl implements RecipeService {
         Recipe detachedRecipe = recipeCommandToRecipe.convert(command);
 
         Recipe savedRecipe = recipeRepository.save(detachedRecipe);
-        log.debug("Saved recipeId: "+savedRecipe.getId());
+        log.debug("Saved RecipeId:" + savedRecipe.getId());
         return recipeToRecipeCommand.convert(savedRecipe);
     }
 }
