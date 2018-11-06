@@ -1,6 +1,8 @@
 package bjorn.petprojects.recipes.controllers;
 
+import bjorn.petprojects.recipes.commands.IngredientCommand;
 import bjorn.petprojects.recipes.commands.RecipeCommand;
+import bjorn.petprojects.recipes.services.IngredientService;
 import bjorn.petprojects.recipes.services.RecipeService;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,6 +21,9 @@ public class IngredientControllerTest {
     @Mock
     RecipeService recipeService;
 
+    @Mock
+    IngredientService ingredientService;
+
     private IngredientController controller;
 
     private MockMvc mockMvc;
@@ -26,7 +31,7 @@ public class IngredientControllerTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        controller = new IngredientController(recipeService);
+        controller = new IngredientController(recipeService, ingredientService);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
@@ -42,5 +47,20 @@ public class IngredientControllerTest {
                 .andExpect(view().name("recipe/ingredient/list"))
                 .andExpect(model().attributeExists("recipe"));
         verify(recipeService, times(1)).findCommandById(anyLong());
+    }
+
+    @Test
+    public void testShowIngredient() throws Exception{
+        //Given
+        IngredientCommand command = new IngredientCommand();
+
+        //When
+        when(ingredientService.findByRecipeIdAndIngredientId(anyLong(),anyLong())).thenReturn(command);
+
+        //Then
+        mockMvc.perform(get("/recipe/1/ingredient/2/show"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipe/ingredient/show"))
+                .andExpect(model().attributeExists("ingredient"));
     }
 }

@@ -11,26 +11,28 @@ import javax.validation.constraints.Null;
 @Component
 public class IngredientToIngredientCommand implements Converter<Ingredient, IngredientCommand> {
 
-    private final UnitOfMeasureToUnitOfMeasureCommand unitOfMeasureToUnitOfMeasureCommand;
+    private final UnitOfMeasureToUnitOfMeasureCommand uomConverter;
 
-    public IngredientToIngredientCommand(UnitOfMeasureToUnitOfMeasureCommand unitOfMeasureToUnitOfMeasureCommand) {
-        this.unitOfMeasureToUnitOfMeasureCommand = unitOfMeasureToUnitOfMeasureCommand;
+    public IngredientToIngredientCommand(UnitOfMeasureToUnitOfMeasureCommand uomConverter) {
+        this.uomConverter = uomConverter;
     }
 
     @Override
     @Null
     @Synchronized
-    public IngredientCommand convert(Ingredient source) {
-        if(source == null){
+    public IngredientCommand convert(Ingredient ingredient) {
+        if (ingredient == null) {
             return null;
         }
 
-        final IngredientCommand command = new IngredientCommand();
-        command.setId(source.getId());
-        command.setAmount(source.getAmount());
-        command.setDescription(source.getDescription());
-        command.setUnitOfMeasure(unitOfMeasureToUnitOfMeasureCommand.convert(source.getUom()));
-
-        return command;
+        IngredientCommand ingredientCommand = new IngredientCommand();
+        ingredientCommand.setId(ingredient.getId());
+        if (ingredient.getRecipe() != null) {
+            ingredientCommand.setRecipeId(ingredient.getRecipe().getId());
+        }
+        ingredientCommand.setAmount(ingredient.getAmount());
+        ingredientCommand.setDescription(ingredient.getDescription());
+        ingredientCommand.setUnitOfMeasure(uomConverter.convert(ingredient.getUom()));
+        return ingredientCommand;
     }
 }
