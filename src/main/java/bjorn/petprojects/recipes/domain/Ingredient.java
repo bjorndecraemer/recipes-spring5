@@ -41,8 +41,4 @@ public class Ingredient {
     public UnitOfMeasure getUnitOfMeasure() {
         return uom;
     }
-
-    public void setUnitOfMeasure(UnitOfMeasure unitOfMeasure) {
-        this.uom = unitOfMeasure;
-    }
 }

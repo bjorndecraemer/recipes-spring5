@@ -4,6 +4,7 @@ import bjorn.petprojects.recipes.commands.IngredientCommand;
 import bjorn.petprojects.recipes.commands.RecipeCommand;
 import bjorn.petprojects.recipes.services.IngredientService;
 import bjorn.petprojects.recipes.services.RecipeService;
+import bjorn.petprojects.recipes.services.UnitOfMeasureService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -23,6 +24,8 @@ public class IngredientControllerTest {
 
     @Mock
     IngredientService ingredientService;
+    @Mock
+    UnitOfMeasureService unitOfMeasureService;
 
     private IngredientController controller;
 
@@ -31,7 +34,7 @@ public class IngredientControllerTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        controller = new IngredientController(recipeService, ingredientService);
+        controller = new IngredientController(recipeService, ingredientService, unitOfMeasureService);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
