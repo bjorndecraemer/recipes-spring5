@@ -1,6 +1,8 @@
 package bjorn.petprojects.recipes.controllers;
 
 import bjorn.petprojects.recipes.commands.IngredientCommand;
+import bjorn.petprojects.recipes.commands.RecipeCommand;
+import bjorn.petprojects.recipes.commands.UnitOfMeasureCommand;
 import bjorn.petprojects.recipes.services.IngredientService;
 import bjorn.petprojects.recipes.services.RecipeService;
 import bjorn.petprojects.recipes.services.UnitOfMeasureService;
@@ -37,6 +39,28 @@ public class IngredientController {
         model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId),Long.valueOf(id)));
         return "recipe/ingredient/show";
     }
+
+
+    @GetMapping
+    @RequestMapping("recipe/{recipeId}/ingredient/new")
+    public String newRecipe(@PathVariable String recipeId, Model model){
+        //Making sure we have a good ID value!
+        RecipeCommand recipeCommand = recipeService.findCommandById(Long.valueOf(recipeId));
+        //TODO: Raise exception if null
+        // Need to return back parent id for hidden form property
+        IngredientCommand ingredientCommand = new IngredientCommand();
+        ingredientCommand.setRecipeId(Long.valueOf(recipeId));
+        model.addAttribute("ingredient", ingredientCommand);
+        //Init UOM
+        ingredientCommand.setUnitOfMeasure(new UnitOfMeasureCommand());
+
+        model.addAttribute("uomList", unitOfMeasureService.listAllUoms());
+
+        return "recipe/ingredient/ingredientform";
+    }
+
+
+
 
     @GetMapping
     @RequestMapping("recipe/{recipeId}/ingredient/{id}/update")
