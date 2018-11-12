@@ -2,6 +2,7 @@ package bjorn.petprojects.recipes.controllers;
 
 import bjorn.petprojects.recipes.commands.RecipeCommand;
 import bjorn.petprojects.recipes.domain.Recipe;
+import bjorn.petprojects.recipes.exceptions.NotFoundException;
 import bjorn.petprojects.recipes.services.RecipeService;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,6 +48,16 @@ public class RecipeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/show"))
                 .andExpect(model().attributeExists("recipe"));
+    }
+
+    @Test
+    public void testGetRecipeNotFound() throws Exception{
+        Recipe recipe = Recipe.builder().id(1L).build();
+
+        when(recipeService.findById(anyLong())).thenThrow(NotFoundException.class);
+
+        mockMvc.perform(get("/recipe/1/show"))
+                .andExpect(status().isNotFound());
     }
 
     @Test

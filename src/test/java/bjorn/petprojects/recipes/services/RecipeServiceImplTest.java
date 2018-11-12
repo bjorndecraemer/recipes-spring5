@@ -5,6 +5,7 @@ import bjorn.petprojects.recipes.commands.RecipeCommand;
 import bjorn.petprojects.recipes.converters.RecipeCommandToRecipe;
 import bjorn.petprojects.recipes.converters.RecipeToRecipeCommand;
 import bjorn.petprojects.recipes.domain.Recipe;
+import bjorn.petprojects.recipes.exceptions.NotFoundException;
 import bjorn.petprojects.recipes.repositories.RecipeRepository;
 import org.junit.Before;
 import org.junit.Rule;
@@ -60,8 +61,18 @@ public class RecipeServiceImplTest {
         verify(recipeRepository, never()).findAll();
     }
 
+    @Test(expected = NotFoundException.class)
+    public void getRecipeByIdTestNotFound() throws Exception{
+        Optional<Recipe> recipeOptional = Optional.empty();
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+        Recipe recipeReturned = recipeService.findById(1L);
+
+        //Should go boom!
+    }
+
     @Test
-    public void getRecipeCoomandByIdTest() throws Exception {
+    public void getRecipeCommandByIdTest() throws Exception {
         Recipe recipe = new Recipe();
         recipe.setId(1L);
         Optional<Recipe> recipeOptional = Optional.of(recipe);
