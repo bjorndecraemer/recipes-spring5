@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
     # specify the version you desire here
-    - image: circleci/openjdk:10-jdk-browsers
+    - image: circleci/openjdk:9-jdk-browsers
 
     # Specify service dependencies here if necessary
     # CircleCI maintains a library of pre-built images
@@ -19,6 +19,7 @@ jobs:
     environment:
       # Customize the JVM maximum heap limit
       MAVEN_OPTS: -Xmx3200m
+      CODECOV_TOKEN: fc491378-c984-4c5b-8eb6-f5a696cd1ba2
 
     steps:
     - checkout
